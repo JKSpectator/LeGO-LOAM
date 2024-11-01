@@ -1,16 +1,6 @@
-# LeGO-LOAM
+# MY-LeGO-LOAM
 
-This repository contains code for a lightweight and ground optimized lidar odometry and mapping (LeGO-LOAM) system for ROS compatible UGVs. The system takes in point cloud  from a Velodyne VLP-16 Lidar (palced horizontally) and optional IMU data as inputs. It outputs 6D pose estimation in real-time. A demonstration of the system can be found here -> https://www.youtube.com/watch?v=O3tz_ftHV48
-<!--
-[![Watch the video](/LeGO-LOAM/launch/demo.gif)](https://www.youtube.com/watch?v=O3tz_ftHV48)
--->
-<p align='center'>
-    <img src="/LeGO-LOAM/launch/demo.gif" alt="drawing" width="800"/>
-</p>
-
-## Lidar-inertial Odometry
-
-An updated lidar-initial odometry package, [LIO-SAM](https://github.com/TixiaoShan/LIO-SAM), has been open-sourced and available for testing.
+This repository contains code for a lightweight and ground optimized lidar odometry and mapping (LeGO-LOAM) system for ROS compatible UGVs. The system takes in point cloud  from a Velodyne VLP-16 Lidar (palced horizontally) and optional IMU data as inputs. It outputs 6D pose estimation in real-time. 
 
 ## Dependency
 
@@ -31,31 +21,11 @@ You can use the following commands to download and compile the package.
 
 ```
 cd ~/catkin_ws/src
-git clone https://github.com/RobustFieldAutonomyLab/LeGO-LOAM.git
+git clone https://github.com/JKSpectator/LeGO-LOAM.git
 cd ..
 catkin_make -j1
 ```
 When you compile the code for the first time, you need to add "-j1" behind "catkin_make" for generating some message types. "-j1" is not needed for future compiling.
-
-## The system
-
-LeGO-LOAM is speficifally optimized for a horizontally placed VLP-16 on a ground vehicle. It assumes there is always a ground plane in the scan. The UGV we are using is Clearpath Jackal. It has a built-in IMU. 
-
-<p align='center'>
-    <img src="/LeGO-LOAM/launch/jackal-label.jpg" alt="drawing" width="400"/>
-</p>
-
-The package performs segmentation before feature extraction.
-
-<p align='center'>
-    <img src="/LeGO-LOAM/launch/seg-total.jpg" alt="drawing" width="400"/>
-</p>
-
-Lidar odometry performs two-step Levenberg Marquardt optimization to get 6D transformation.
-
-<p align='center'>
-    <img src="/LeGO-LOAM/launch/odometry.jpg" alt="drawing" width="400"/>
-</p>
 
 ## New Lidar
 
@@ -99,44 +69,3 @@ Notes: The parameter "/use_sim_time" is set to "true" for simulation, "false" to
 ```
 rosbag play *.bag --clock --topic /velodyne_points /imu/data
 ```
-Notes: Though /imu/data is optinal, it can improve estimation accuracy greatly if provided. Some sample bags can be downloaded from [here](https://github.com/RobustFieldAutonomyLab/jackal_dataset_20170608). 
-
-## New data-set
-
-This dataset, [Stevens data-set](https://github.com/TixiaoShan/Stevens-VLP16-Dataset), is captured using a Velodyne VLP-16, which is mounted on an UGV - Clearpath Jackal, on Stevens Institute of Technology campus. The VLP-16 rotation rate is set to 10Hz. This data-set features over 20K scans and many loop-closures. 
-
-<p align='center'>
-    <img src="/LeGO-LOAM/launch/dataset-demo.gif" alt="drawing" width="600"/>
-</p>
-<p align='center'>
-    <img src="/LeGO-LOAM/launch/google-earth.png" alt="drawing" width="600"/>  
-</p>
-
-## Cite *LeGO-LOAM*
-
-Thank you for citing [our *LeGO-LOAM* paper](./Shan_Englot_IROS_2018_Preprint.pdf) if you use any of this code: 
-```
-@inproceedings{legoloam2018,
-  title={LeGO-LOAM: Lightweight and Ground-Optimized Lidar Odometry and Mapping on Variable Terrain},
-  author={Shan, Tixiao and Englot, Brendan},
-  booktitle={IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
-  pages={4758-4765},
-  year={2018},
-  organization={IEEE}
-}
-```
-
-## Loop Closure
-
-The loop-closure method implemented in this package is a naive ICP-based method. It often fails when the odometry drift is too large. For more advanced loop-closure methods, there is a package called [SC-LeGO-LOAM](https://github.com/irapkaist/SC-LeGO-LOAM), which features utilizing point cloud descriptor.
-
-## Speed Optimization
-
-An optimized version of LeGO-LOAM can be found [here](https://github.com/facontidavide/LeGO-LOAM/tree/speed_optimization). All credits go to @facontidavide. Improvements in this directory include but not limited to:
-
-    + To improve the quality of the code, making it more readable, consistent and easier to understand and modify.
-    + To remove hard-coded values and use proper configuration files to describe the hardware.
-    + To improve performance, in terms of amount of CPU used to calculate the same result.
-    + To convert a multi-process application into a single-process / multi-threading one; this makes the algorithm more deterministic and slightly faster.
-    + To make it easier and faster to work with rosbags: processing a rosbag should be done at maximum speed allowed by the CPU and in a deterministic way.
-    + As a consequence of the previous point, creating unit and regression tests will be easier.
