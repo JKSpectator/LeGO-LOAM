@@ -66,7 +66,7 @@ extern const int Horizon_SCAN = 1800; //水平角度范围
 extern const float ang_res_x = 0.18; //角度分辨率
 extern const float ang_res_y = 1.0;
 extern const float ang_bottom = 15.0; //最低垂直角度
-extern const int groundScanInd = 25; //哪一线最接近地面
+extern const int groundScanInd = 13; //哪一线最接近地面
 
 // VLP-16
 // extern const int N_SCAN = 16;
